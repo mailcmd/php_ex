@@ -2,10 +2,10 @@
 
 # PHP_EX (A project just for fun)
 
-`PHP_EX` is an interface that allow run PHP scripts inside Elixir. `PHP_EX` can run PHP code thanks
-to Erlang C-Nodes running in background waiting for requets to run a script. The hard work is done
-by the C-Nodes; every one, when receive a request, create a forked process, run the script and send
-de result to the request caller. 
+`PHP_EX` is an interface that allow to run PHP scripts inside Elixir. `PHP_EX` can run PHP code 
+thanks to Erlang C-Nodes running in background waiting for requets to run a script. The hard work 
+is done by the C-Nodes; every one, when receive a request, create a forked process, run the 
+script and send the result to the request caller. 
 
 ## Features
   - You can define the amount of C-Nodes running.
