@@ -1,0 +1,38 @@
+
+php.h,545
+#define PHP_ERROR 8,112
+#define PHP_OK 9,132
+    void *php_handle;php_handle14,275
+} priv_data_t;15,297
+static char *g_output g_output17,313
+static size_t g_output_len 18,343
+static size_t g_output_cap 19,375
+static int my_header_handler(21,408
+static int my_ub_write(31,795
+int php_define_global(52,1407
+int php_init(67,1809
+void php_end(77,2070
+void php_create_context(81,2116
+void php_destroy_context(85,2168
+int php_define_get(89,2223
+int php_define_cookie(93,2377
+int php_define_post(97,2492
+int php_run_script(101,2648
+
+php_node.c,463
+#define FUNCTION_SUCCESS 13,208
+#define FUNCTION_FAIL 14,235
+#define EI_LOG_INFO(16,260
+#define EI_LOG_WARN(17,343
+#define EI_LOG_ERROR(18,438
+    long id;21,550
+    char *caller_name;caller_name22,563
+    erlang_pid caller_pid;23,586
+    char *node_name;node_name24,613
+} request_data_t;25,634
+void usage(29,761
+void error_response(34,891
+void php_define_globals(52,1485
+ei_x_buff* run(126,4157
+ei_x_buff* define_get(218,7344
+int main(271,8893

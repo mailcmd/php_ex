@@ -1,0 +1,5 @@
+%{
+  "clist": {:hex, :clist, "0.1.3", "9a4c5fa2a693ada831f9f2fc0d91609a66be35ebad24cb21837272b812ebb427", [:mix], [], "hexpm", "7d563a402a73cd5265a2bc6536380c8e6399029c6bbe8670058c3f8cda7a1480"},
+  "elixir_make": {:hex, :elixir_make, "0.10.0", "16577e2583a79bb79237bbff349619ef5d80afffc07eac6e4faf0d00e2ddaf7d", [:mix], [], "hexpm", "dc1f09fb7fa68866b886abd5f0f3c83553b1a19a52359a899e92af1bb3b31982"},
+  "nodex": {:hex, :nodex, "0.1.2", "7e9c81dd9a0ad7d8cdef7fa1512a9009ecca22cbc82827f99978432a3bf07a61", [:mix], [], "hexpm", "ceac2d37f2463f60bd1f0beeeebb621178cae12d6e626b587057ec7b14e6f236"},
+}
