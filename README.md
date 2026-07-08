@@ -1,4 +1,6 @@
-# PHP_EX
+<h2>Work in process</h2>
+
+# PHP_EX (A project just for fun)
 
 `PHP_EX` is an interface that allow run PHP scripts inside Elixir. `PHP_EX` can run PHP code thanks
 to Erlang C-Nodes running in background waiting for requets to run a script. The hard work is done
