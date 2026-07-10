@@ -367,7 +367,7 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
                     script_path);
 
         // close session if the script do not 
-        /* php_session_close(); */
+        php_session_close();
             
         // Build the reply payload tuple
         out_buf = malloc(sizeof(ei_x_buff));
@@ -395,10 +395,11 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
 
         return out_buf;
     } else {
-        EI_LOG_ERROR("[%s] [%u] Failed running '%s'",
+        EI_LOG_ERROR("[%s] [%u] Failed running '%s' (%d)",
                      request_data.short_node_name,
                      request_data.id,
-                     script_path);
+                     script_path,
+                     result);
 
         php_clear_headers();
 
