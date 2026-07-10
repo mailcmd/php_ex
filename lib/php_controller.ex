@@ -5,7 +5,7 @@ defmodule PHP.Controller do
 
   @nodes_count Application.compile_env!(:php_ex, :nodes_count)
   @secretcookie Application.compile_env!(:php_ex, :secretcookie)
-  @php_ini Application.compile_env!(:php_ex, :php_ini) || ""
+  @php_ini Application.compile_env(:php_ex, :php_ini, "")
 
   @priv_dir "#{File.cwd!()}/priv" # Application.app_dir(:php_ex, "priv")
 
