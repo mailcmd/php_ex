@@ -24,7 +24,7 @@ defmodule PHP.Controller do
       {^node, ^rid, body, headers} ->
         {:ok, body, headers}
       msg ->
-        {:error, :unexpected_message, msg}
+        {:error, "Unexpected message: #{msg}"}
     end
   end
 
@@ -69,11 +69,6 @@ defmodule PHP.Controller do
   end
 
   @impl true
-  # def handle_info({_, {:data, {_, line}}}, status) do
-  #   # Logger.log(:info, "#{inspect p} #{line}")
-  #   IO.puts(line)
-  #   {:noreply, status}
-  # end
   def handle_info(msg, status) do
     IO.inspect msg, label: "UNKNOWN MSG"
     {:noreply, status}
