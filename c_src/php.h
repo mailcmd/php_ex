@@ -93,6 +93,21 @@ int php_define_global(const char *varname, const char *key, const char *value) {
   }
 }
 
+int php_define_header(const char *key, const char *value) {
+  char *define_code;
+  asprintf(&define_code, "header('%s: %s')", key, value);
+  if (define_code) {
+    zval dummy;
+    ZVAL_NULL(&dummy);
+    zend_eval_string(define_code, &dummy, "global_definitions");
+    zval_ptr_dtor(&dummy);
+    free(define_code);
+    return PHP_OK;
+  } else {
+    return PHP_ERROR;
+  }
+}
+
 int php_init(int argc, char **argv) {
     php_embed_module.ub_write = output_handler; 
     php_embed_module.header_handler = header_handler;

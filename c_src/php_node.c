@@ -157,6 +157,86 @@ void php_define_globals(const char *define_type,
     ei_skip_term(in_buf.buff, index);
 }
 
+void php_add_headers(int list_len,
+                     ei_x_buff in_buf,
+                     int *index,
+                     int req_id) {
+    for (int i = 0; i < list_len; i++) {
+        int len;
+        int type;
+        char key[MAXATOMLEN];
+        char value[MAXATOMLEN];
+
+        ei_get_type(in_buf.buff, index, &type, &len);
+        if (type != ERL_SMALL_TUPLE_EXT) {
+            EI_LOG_WARN(
+                        "[%u] header pair %d: Invalid pair, expect a small tuple (%d)",
+                        req_id,
+                        i,
+                        type
+                        );
+            continue;
+        }
+        if (ei_decode_tuple_header(in_buf.buff, index, &len) != 0 || len != 2) {
+            EI_LOG_WARN(
+                        "[%u] header pair %d: Invalid pair, expect a 2-tuple (%d)",
+                        req_id,
+                        i,
+                        type
+                        );
+            continue;
+        }
+
+        // extract the key
+        ei_get_type(in_buf.buff, index, &type, &len);
+        if (type == ERL_ATOM_EXT) {
+            ei_decode_atom(in_buf.buff, index, key);
+        } else if (type == ERL_BINARY_EXT) {
+            ei_decode_binary(in_buf.buff, index, key, &len);
+            key[len] = '\0';
+        } else {
+            EI_LOG_WARN(
+                        "[%u] header pair %d: Invalid key type, expect a binary or an atom (%d)",
+                        req_id,
+                        i,
+                        type
+                        );
+            ei_skip_term(in_buf.buff, index);
+            ei_skip_term(in_buf.buff, index);
+            continue;
+        }
+
+        // extract the value
+        ei_get_type(in_buf.buff, index, &type, &len);
+        if (type != ERL_BINARY_EXT) {
+            EI_LOG_WARN(
+                        "[%u] header pair %d: Invalid value type, expect a binary (%d)",
+                        req_id,
+                        i,
+                        type
+                        );
+            ei_skip_term(in_buf.buff, index);
+            continue;
+        }
+        ei_decode_binary(in_buf.buff, index, value, &len);
+        value[len] = '\0';
+        int result;
+        result = php_define_header(key, value);
+        if (result != PHP_OK) {
+            EI_LOG_ERROR("[%u] Failed defining header ->'%s' = '%s'",
+                         req_id,
+                         key,
+                         value);
+        } else {
+            EI_LOG_INFO("[%u] Appending to header -> '%s' => '%s'",
+                        req_id,
+                        key,
+                        value);
+        }
+    }
+    ei_skip_term(in_buf.buff, index);
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // FUNCTIONS
 
@@ -245,6 +325,26 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
             ei_skip_term(in_buf.buff, &index);
         } else {
             EI_LOG_WARN("[%s] [%u] COOKIE params: Invalid type, expect a list (%d)",
+                        request_data.short_node_name,
+                        request_data.id,
+                        type
+                        );
+            ei_skip_term(in_buf.buff, &index);
+        }
+    }
+    // HEADERS values
+    if (arity > 3) {
+        ei_get_type(in_buf.buff, &index, &type, &list_len);
+        if (type == ERL_LIST_EXT) {
+            ei_decode_list_header(in_buf.buff, &index, &list_len);
+            php_add_headers(list_len, in_buf, &index, request_data.id);
+        } else if (type == ERL_NIL_EXT){
+            EI_LOG_INFO("[%s] [%u] No HEADERs",
+                        request_data.short_node_name,
+                        request_data.id);
+            ei_skip_term(in_buf.buff, &index);
+        } else {
+            EI_LOG_WARN("[%s] [%u] HEADERS: Invalid type, expect a list (%d)",
                         request_data.short_node_name,
                         request_data.id,
                         type
