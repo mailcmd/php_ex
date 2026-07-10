@@ -117,10 +117,13 @@ int php_session_close() {
     return PHP_OK;
 }
 
-int php_init(int argc, char **argv) {
+int php_init(char *php_ini) {
+    if (php_ini) {
+        php_embed_module.php_ini_path_override = php_ini;
+    }
     php_embed_module.ub_write = output_handler; 
     php_embed_module.header_handler = header_handler;
-    if (php_embed_init(argc, argv) == FAILURE) {
+    if (php_embed_init(0, NULL) == FAILURE) {
         return PHP_ERROR;
     } else {
         return PHP_OK;

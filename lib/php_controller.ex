@@ -5,6 +5,7 @@ defmodule PHP.Controller do
 
   @nodes_count Application.compile_env!(:php_ex, :nodes_count)
   @secretcookie Application.compile_env!(:php_ex, :secretcookie)
+  @php_ini Application.compile_env!(:php_ex, :php_ini) || ""
 
   @priv_dir "#{File.cwd!()}/priv" # Application.app_dir(:php_ex, "priv")
 
@@ -36,7 +37,7 @@ defmodule PHP.Controller do
     spawn(fn ->
       System.cmd(
         "#{@priv_dir}/php_node",
-        ["#{node_name}", "#{@secretcookie}"] #, into: IO.stream()
+        ["#{node_name}", "#{@secretcookie}", "#{@php_ini}"] #, into: IO.stream()
       )
       loop(node_name)
     end)

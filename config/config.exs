@@ -5,4 +5,5 @@ config :logger, :default_formatter,
 
 config :php_ex,
        nodes_count: 5,
-       secretcookie: :supersecret
+       secretcookie: :supersecret,
+       php_ini: "/etc/php7/apache2/php.ini"

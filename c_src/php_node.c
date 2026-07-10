@@ -436,12 +436,19 @@ int main(int argc, char **argv) {
 
     char *node_name = argv[1];
     char *secretcookie = argv[2];
+    char *php_ini;
 
+    if (argc == 4) {
+        php_ini = argv[3];
+    } else {
+        php_ini = NULL;
+    }
+    
     char full_node_name[256];
     sprintf(full_node_name, "%s@127.0.0.1", node_name);
 
     // Init PHP
-    php_init(0, NULL);
+    php_init(php_ini);
     EI_LOG_INFO("[%s] PHP initialized", node_name);
 
     // Init ei node struct
