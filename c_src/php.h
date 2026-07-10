@@ -79,33 +79,42 @@ static void php_clear_output() {
 // PUBLIC API
 
 int php_define_global(const char *varname, const char *key, const char *value) {
-  char *define_code;
-  asprintf(&define_code, "%s['%s'] = '%s'", varname, key, value);
-  if (define_code) {
-    zval dummy;
-    ZVAL_NULL(&dummy);
-    zend_eval_string(define_code, &dummy, "global_definitions");
-    zval_ptr_dtor(&dummy);
-    free(define_code);
-    return PHP_OK;
-  } else {
-    return PHP_ERROR;
-  }
+    char *define_code;
+    asprintf(&define_code, "%s['%s'] = '%s'", varname, key, value);
+    if (define_code) {
+        zval dummy;
+        ZVAL_NULL(&dummy);
+        zend_eval_string(define_code, &dummy, "global_definitions");
+        zval_ptr_dtor(&dummy);
+        free(define_code);
+        return PHP_OK;
+    } else {
+        return PHP_ERROR;
+    }
 }
 
 int php_define_header(const char *key, const char *value) {
-  char *define_code;
-  asprintf(&define_code, "header('%s: %s')", key, value);
-  if (define_code) {
+    char *define_code;
+    asprintf(&define_code, "header('%s: %s')", key, value);
+    if (define_code) {
+        zval dummy;
+        ZVAL_NULL(&dummy);
+        zend_eval_string(define_code, &dummy, "global_definitions");
+        zval_ptr_dtor(&dummy);
+        free(define_code);
+        return PHP_OK;
+    } else {
+        return PHP_ERROR;
+    }
+}
+
+int php_session_close() {
+    char *code = "if (session_status() == 2) session_write_close();";
     zval dummy;
     ZVAL_NULL(&dummy);
-    zend_eval_string(define_code, &dummy, "global_definitions");
+    zend_eval_string(code, &dummy, "global_definitions");
     zval_ptr_dtor(&dummy);
-    free(define_code);
     return PHP_OK;
-  } else {
-    return PHP_ERROR;
-  }
 }
 
 int php_init(int argc, char **argv) {

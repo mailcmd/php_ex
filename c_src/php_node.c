@@ -298,7 +298,7 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
         if (type == ERL_LIST_EXT) {
             ei_decode_list_header(in_buf.buff, &index, &list_len);
             php_define_globals("POST", list_len, in_buf, &index, request_data.id);
-        } else if (type == ERL_NIL_EXT){
+        } else if (type == ERL_NIL_EXT) {
             EI_LOG_INFO("[%s] [%u] No POST params",
                         request_data.short_node_name,
                         request_data.id);
@@ -366,6 +366,9 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
                     request_data.id,
                     script_path);
 
+        // close session if the script do not 
+        php_session_close();
+            
         // Build the reply payload tuple
         out_buf = malloc(sizeof(ei_x_buff));
         ei_x_new(out_buf);
