@@ -173,7 +173,12 @@ int php_run_script(const char *filename) {
     file_handle.free_filename = 0;
 
     // Execute the script
-    int result = php_execute_script(&file_handle);
+    int result;
+    zend_first_try {
+        result = php_execute_script(&file_handle);
+    } zend_catch {
+        result = EG(exit_status);
+    } zend_end_try();
 
     return result;
 }

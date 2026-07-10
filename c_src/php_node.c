@@ -278,6 +278,7 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
         free(dir);
         return NULL;
     }
+    free(dir);
 
     // The remain tuple values MUST BE lists
     int list_len;
@@ -411,7 +412,6 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
                      result);
 
         php_clear_headers();
-
         free(script_path);
 
         // CLOSE PHP CONTEXT
