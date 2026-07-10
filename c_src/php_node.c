@@ -367,7 +367,7 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
                     script_path);
 
         // close session if the script do not 
-        php_session_close();
+        /* php_session_close(); */
             
         // Build the reply payload tuple
         out_buf = malloc(sizeof(ei_x_buff));
