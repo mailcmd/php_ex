@@ -18,6 +18,7 @@
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <libgen.h>
 
 #include "ei.h"
 
@@ -269,6 +270,14 @@ ei_x_buff* run(ei_x_buff in_buf, int index, request_data_t request_data) {
                 request_data.short_node_name,
                 request_data.id,
                 script_path);
+
+    char *dir = strdup(script_path);
+    dir = dirname(dir);
+    if (chdir(dir) != 0) {
+        perror("chdir");
+        free(dir);
+        return NULL;
+    }
 
     // The remain tuple values MUST BE lists
     int list_len;
