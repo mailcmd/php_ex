@@ -16,8 +16,9 @@ defmodule PHP.Controller do
     GenServer.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  def run(script_path, get \\ [], post \\ [], cookie \\ []) do
-    {node, rid} = GenServer.call(__MODULE__, {:run, self(), {script_path, get, post, cookie}})
+  def run(script_path, get \\ [], post \\ [], cookies \\ [], headers \\ []) do
+    {node, rid} =
+      GenServer.call(__MODULE__, {:run, self(), {script_path, get, post, cookies, headers}})
     receive do
       {^node, ^rid, :error, msg} ->
         {:error, msg}
