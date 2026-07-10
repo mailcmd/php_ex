@@ -109,7 +109,7 @@ int php_define_header(const char *key, const char *value) {
 }
 
 int php_session_close() {
-    char *code = "if (session_status() == 2) session_write_close();";
+    char *code = "session_write_close();";
     zval dummy;
     ZVAL_NULL(&dummy);
     zend_eval_string(code, &dummy, "global_definitions");
